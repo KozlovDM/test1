@@ -1,0 +1,20 @@
+CREATE SCHEMA IF NOT EXISTS PUBLIC;
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TYPE STATUS_TYPE AS ENUM ('NEW', 'ACTIVE', 'DEACTIVATED');
+
+CREATE TABLE IF NOT EXISTS CAMPAIGN
+(
+    id     uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY ,
+    name   varchar(30) NOT NULL,
+    status STATUS_TYPE NOT NULL default 'NEW'
+);
+
+CREATE TABLE IF NOT EXISTS SCENARIOS
+(
+    id     uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
+    name   varchar(30) NOT NULL,
+    start_date TIMESTAMP,
+    end_date TIMESTAMP,
+    campaign_id uuid REFERENCES CAMPAIGN(id)
+);
